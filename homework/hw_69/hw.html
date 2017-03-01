@@ -1,0 +1,11 @@
+<p>For homework - Write a Connect (or Express - but don't use the express generator - we haven't seen enough about it yet) app
+  that serves a dynamic page that says something (hello world?) when the user goes to the root route / (exactly as we did
+  in today's examples.); Then make a middleware module that will serve a file if it matches the route requested by the user,
+  or just call next() if the file is not found (don't send back a 404 since this is just middleware - if the file isn't found
+  maybe some other middleware later in the chain will serve something) - just like we did in class when we made the queryParser
+  module (except that never sent a response, it always called next. This one will send a response if it finds the file, and
+  will call next if it doesn't) You can use the file server we wrote during the last few classes as a basis for this module
+  if you like. (Of course as mentioned connect/express already comes with a file serving module - it is even included in
+  the generated app.js when you use the generator "app.use(express.static(path.join(__dirname, 'public')));" , which is middleware
+  that will serve any files requested by the user found in the "public" directory inside the app directory - so you wouldn't
+  really build your own file serving module - but we want to build our own to get practice building middleware modules.)</p>
