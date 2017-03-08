@@ -1,0 +1,44 @@
+
+> use school
+switched to db school
+
+> db.createCollection('students')
+{ "ok" : 1 }
+
+> db.students.insert({first_name:'Donald',last_name:'Trump',adress:'1700 Pensylvania Ave',grade:12} )
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({first_name:'Shmuel',last_name:'Perl',adress:'1 Park Ave',grade:2} )
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({first_name:'John',last_name:'Frank',adress:'12 Lexington Ave ',grade:20} )
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({first_name:'Joe',last_name:'Smith',adress:'1 Madison Ave ',grade:5} )
+WriteResult({ "nInserted" : 1 })
+> db.students.insert({first_name:'George',last_name:'Foo',adress:'312 Princeton Ave ',grade:15} )
+WriteResult({ "nInserted" : 1 })
+> db.students.find({first_name:'Donald'})
+{ "_id" : ObjectId("58bdd61bb8ef12bb649296b5"), "first_name" : "Donald", "last_name" : "Trump", "adress" : "1700 Pensylvania Ave", "grade" : 12 }
+> db.students.find({first_name:'Donald',grade:5})
+> use store
+switched to db store
+> db.createCollection('products')
+{ "ok" : 1 }
+> db.products.insert([{name:'paper',price:25.59},{name:'pens',price:1.99}])
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+> db.products.find(*)
+2017-03-06T16:51:13.802-0500 E QUERY    [thread1] SyntaxError: expected expression, got '*' @(shell):1:17
+> db.products.find()
+{ "_id" : ObjectId("58bdd9a9b8ef12bb649296ba"), "name" : "paper", "price" : 25.59 }
+{ "_id" : ObjectId("58bdd9a9b8ef12bb649296bb"), "name" : "pens", "price" : 1.99 }
+>
+>
+> db.products.remove({})
+WriteResult({ "nRemoved" : 2 })
