@@ -1,0 +1,146 @@
+> use school
+switched to db school
+> db.students.find()
+{ "_id" : ObjectId("58bdd61bb8ef12bb649296b5"), "foo" : 7, "grade" : 1 }
+{ "_id" : ObjectId("58bdd674b8ef12bb649296b6"), "first_name" : "Shmuel", "last_name" : "Perl", "grade" : 3, "address" : "1 Park Ave" }
+{ "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"), "first_name" : "John", "last_name" : "Frank", "grade" : 21, "address" : "12 Lexington Ave " }
+{ "_id" : ObjectId("58bdd6f2b8ef12bb649296b8"), "first_name" : "Joe", "last_name" : "Smith", "grade" : 6, "address" : "1 Madison Ave " }
+{ "_id" : ObjectId("58bdd728b8ef12bb649296b9"), "first_name" : "Barack", "last_name" : "Obama", "grade" : 1, "address" : "jail" }
+> db.students.update({"_id" : ObjectId("58bdd61bb8ef12bb649296b5")},{fist_name:"Avrohom",last_name:"Goldstein",grade:7,address:"123 Main Ave"})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({grade:6},{$set:{grade:7}},{multi:true})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({grade:7},{$set:{test_scores:[95,98,93]}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.students.update({grade:7},{$push:{test_scores:{$each:[85,86,87,88,89]}}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.students.update({grade:7},{$pop:{test_scores:1}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.students.update({grade:7},{$pull:{test_scores:85}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.students.find({grade:{$gt:7}}).pretty()
+{
+        "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"),
+        "first_name" : "John",
+        "last_name" : "Frank",
+        "grade" : 21,
+        "address" : "12 Lexington Ave "
+}
+> db.students.find({grade:{$gt:7},first_name:'Joe'}).pretty()
+> db.students.find({$or:[{grade:{$lt: 7}},{fist_name:'Joe'}]})
+{ "_id" : ObjectId("58bdd674b8ef12bb649296b6"), "first_name" : "Shmuel", "last_name" : "Perl", "grade" : 3, "address" : "1 Park Ave" }
+{ "_id" : ObjectId("58bdd728b8ef12bb649296b9"), "first_name" : "Barack", "last_name" : "Obama", "grade" : 1, "address" : "jail" }
+> db.students.find({grade:{$ne: 7}})
+{ "_id" : ObjectId("58bdd674b8ef12bb649296b6"), "first_name" : "Shmuel", "last_name" : "Perl", "grade" : 3, "address" : "1 Park Ave" }
+{ "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"), "first_name" : "John", "last_name" : "Frank", "grade" : 21, "address" : "12 Lexington Ave " }
+{ "_id" : ObjectId("58bdd728b8ef12bb649296b9"), "first_name" : "Barack", "last_name" : "Obama", "grade" : 1, "address" : "jail" }
+> db.students.find({grade:{$in:[ 6,7,8]}})
+{ "_id" : ObjectId("58bdd61bb8ef12bb649296b5"), "last_name" : "Goldstein", "grade" : 7, "address" : "123 Main Ave", "test_scores" : [ 95, 98, 93, 86, 87, 88 ], "first_name" : "Avrohom" }
+{ "_id" : ObjectId("58bdd6f2b8ef12bb649296b8"), "first_name" : "Joe", "last_name" : "Smith", "grade" : 7, "address" : "1 Madison Ave ", "test_scores" : [ 95, 98, 93, 86, 87, 88 ] }
+> db.students.find({grade:{$nin:[ 6,8]}})
+{ "_id" : ObjectId("58bdd61bb8ef12bb649296b5"), "fist_name" : "Avrohom", "last_name" : "Goldstein", "grade" : 7, "address" : "123 Main Ave", "test_scores" : [ 95, 98, 93, 86, 87, 88 ] }
+{ "_id" : ObjectId("58bdd674b8ef12bb649296b6"), "first_name" : "Shmuel", "last_name" : "Perl", "grade" : 3, "address" : "1 Park Ave" }
+{ "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"), "first_name" : "John", "last_name" : "Frank", "grade" : 21, "address" : "12 Lexington Ave " }
+{ "_id" : ObjectId("58bdd6f2b8ef12bb649296b8"), "first_name" : "Joe", "last_name" : "Smith", "grade" : 7, "address" : "1 Madison Ave ", "test_scores" : [ 95, 98, 93, 86, 87, 88 ] }
+{ "_id" : ObjectId("58bdd728b8ef12bb649296b9"), "first_name" : "Barack", "last_name" : "Obama", "grade" : 1, "address" : "jail" }
+> db.students.find({grade:{$not:{$gte:7}}})
+{ "_id" : ObjectId("58bdd674b8ef12bb649296b6"), "first_name" : "Shmuel", "last_name" : "Perl", "grade" : 3, "address" : "1 Park Ave" }
+{ "_id" : ObjectId("58bdd728b8ef12bb649296b9"), "first_name" : "Barack", "last_name" : "Obama", "grade" : 1, "address" : "jail" }
+> db.students.aggregate({$sort:{last_name:1}}).pretty()
+{
+        "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"),
+        "first_name" : "John",
+        "last_name" : "Frank",
+        "grade" : 21,
+        "address" : "12 Lexington Ave "
+}
+{
+        "_id" : ObjectId("58bdd61bb8ef12bb649296b5"),
+        "last_name" : "Goldstein",
+        "grade" : 7,
+        "address" : "123 Main Ave",
+        "test_scores" : [
+                95,
+                98,
+                93,
+                86,
+                87,
+                88
+        ],
+        "first_name" : "Avrohom"
+}
+{
+        "_id" : ObjectId("58bdd728b8ef12bb649296b9"),
+        "first_name" : "Barack",
+        "last_name" : "Obama",
+        "grade" : 1,
+        "address" : "jail"
+}
+{
+        "_id" : ObjectId("58bdd674b8ef12bb649296b6"),
+        "first_name" : "Shmuel",
+        "last_name" : "Perl",
+        "grade" : 3,
+        "address" : "1 Park Ave"
+}
+{
+        "_id" : ObjectId("58bdd6f2b8ef12bb649296b8"),
+        "first_name" : "Joe",
+        "last_name" : "Smith",
+        "grade" : 7,
+        "address" : "1 Madison Ave ",
+        "test_scores" : [
+                95,
+                98,
+                93,
+                86,
+                87,
+                88
+        ]
+}
+> db.students.aggregate({$sort:{last_name:1}},{$limit:3}).pretty()
+{
+        "_id" : ObjectId("58bdd6c4b8ef12bb649296b7"),
+        "first_name" : "John",
+        "last_name" : "Frank",
+        "grade" : 21,
+        "address" : "12 Lexington Ave "
+}
+{
+        "_id" : ObjectId("58bdd61bb8ef12bb649296b5"),
+        "last_name" : "Goldstein",
+        "grade" : 7,
+        "address" : "123 Main Ave",
+        "test_scores" : [
+                95,
+                98,
+                93,
+                86,
+                87,
+                88
+        ],
+        "first_name" : "Avrohom"
+}
+{
+        "_id" : ObjectId("58bdd728b8ef12bb649296b9"),
+        "first_name" : "Barack",
+        "last_name" : "Obama",
+        "grade" : 1,
+        "address" : "jail"
+}
+> db.students.aggregate({$sort:{last_name:1}},{$skip:3},{$limit:1}).pretty()
+{
+        "_id" : ObjectId("58bdd674b8ef12bb649296b6"),
+        "first_name" : "Shmuel",
+        "last_name" : "Perl",
+        "grade" : 3,
+        "address" : "1 Park Ave"
+}
+> db.students.update({"_id" : ObjectId("58bdd61bb8ef12bb649296b5")},{$set:{'parents':{'father':'Bill','mother':'Hillary'}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.update({"_id" : ObjectId("58bdd728b8ef12bb649296b9")},{$set:{'parents':{'father':'Bob','mother':'Hi'}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+>> db.students.find({'parents.father':'Bill'})
+{ "_id" : ObjectId("58bdd61bb8ef12bb649296b5"), "last_name" : "Goldstein", "grade" : 7, "address" : "123 Main Ave", "test_scores" : [ 95, 98, 93, 86, 87, 88 ], "first_name" : "Avrohom", "parents" : { "father" : "Bill", "mother" : "Hillary" } }
+>
