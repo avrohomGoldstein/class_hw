@@ -1,0 +1,41 @@
+Files from last nights class have been uploaded to dropbox (SL Class 76).
+
+For homework:
+
+Use Mongoose to do the following:
+
+Note make sure to look at the Mongoose docs, they are useful. Also start with
+ just doing employee with a simple string for department. Once you have employees
+  working properly move on to the department part of the exercise if you have time.
+
+Create a schema for an employee. Employees will have:
+name (you can do name sub document with first and last and even a virtual full
+ like we did in class for contact if you like - or just be lazy and have a single
+  name property. Whatever you feel like doing)
+salary
+department - where department is ref to a department object (see below)
+Create a schema for a department. Department will have:
+name
+array of employees where employees are refs to employee objects (see above)
+Add print method to both schemas to print the objects out (where departments call 
+print on each employee to print them). Maybe something like:
+Sales
+- Joe Smith: 50000
+- Donald Trump: 120000
+
+Engineering
+- Bernie Sanders
+
+Create the models for each of the schemas.
+
+Create a few departments and employees. Stick the employees in various departments
+. Save the employees. Save the departments
+
+Reload the departments - make sure to populate the employees in each department.
+ Print out the departments. Verify that you see the departments and the employees
+  printed out as expected. NOTE: I purposely am not printing the department name 
+  when printing each employee. If you did want to print that you will need to 
+  populate the department inside the employees as well (not just the employees
+   in the departments). You can try playing with getting that working if you have time.
+
+Keep in mind that all interactions with mongo are asynchronous!
